@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Conta</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="page">
+        <form method="POST" class="formLogin">
+            <h1>Registrar Conta</h1>
+            <p>Digite os seus dados para cadastrar.</p>
+
+            <label for="text">Nome</label>
+            <input name="nomeUsuario" type="text" placeholder="Digite seu nome">
+
+            <label for="text">E-Mail</label>
+            <input name="emailUsuario" type="email" placeholder="Digite seu e-mail">
+
+            <label for="password">Senha</label>
+            <input name="senhaUsuario" type="password" placeholder="Digite sua senha" />
+
+            <label for="password">Confirmar Senha</label>
+            <input name="senhaConfirmarUsuario" type="password" placeholder="Confirmar a sua senha" />
+
+            <input type="submit" value="Registrar" class="btn" />
+        </form>
+    </div>
+</body>
+</html>
