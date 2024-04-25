@@ -1,12 +1,15 @@
 package br.com.frateu.blogcomentario.controller;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.com.frateu.blogcomentario.database.DatabaseUsuario;
+import br.com.frateu.blogcomentario.model.Usuarios;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -23,17 +26,41 @@ public class LoginController {
     }
 
     @PostMapping("/")
-    public String postLogin(@RequestParam String usuario, @RequestParam String password, HttpSession session) {
-        System.out.println("Usuario: " + usuario);
-        System.out.println("Senha: " + password);
+    public String postLogin(@RequestParam String emailUsuario, @RequestParam String senhaUsuario, HttpSession session) {
+        String telaRedirecionamento = "redirect:/";
 
-        if (BCrypt.checkpw("frateu", "$2a$10$iE/gm8mwJ1bGK.yzcILRq.BRzZjS5RvJnHpFu5ltjCQ27A5Zkni6O")) {
-            session.setAttribute("mensagemLogin", "Foii");
-        } else {
-            session.setAttribute("mensagemLogin", "não foi");
+        Usuarios usuarioLogin = new Usuarios();
+
+        usuarioLogin.setEmailUsuario(emailUsuario);
+
+        DatabaseUsuario dbUsuario = new DatabaseUsuario();
+
+        try {
+            usuarioLogin = dbUsuario.consultarUsuario(usuarioLogin);
+
+            if(verificarUsuario(usuarioLogin, senhaUsuario)) {
+                telaRedirecionamento = "redirect:/home";
+            }
+        } catch (Exception e) {
+           System.out.println(e); 
         }
 
-        return "redirect:/";
+        return telaRedirecionamento;
     }
     
+    @Cacheable("usuarioLogado")
+    private boolean verificarUsuario(Usuarios usuarioLogin, String senhaLogin) {
+        boolean verificadorUsuario = false;
+        
+        try {
+            if (BCrypt.checkpw(senhaLogin, usuarioLogin.getSenhaUsuario())) {
+                verificadorUsuario = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return verificadorUsuario;
+    }
+
 }

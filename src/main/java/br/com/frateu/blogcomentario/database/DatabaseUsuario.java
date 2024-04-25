@@ -23,19 +23,19 @@ public class DatabaseUsuario {
             String query = "SELECT * FROM blog." + Usuarios.NM_USUARIO_BD + " WHERE ";
 
             if (pUsuario.getIdUsuario() != null) {
-                query = query + conectorAND + Usuarios.NM_USUARIO_BD + "." + Usuarios.NM_ID_USUARIO + " = ?";
+                query = query + conectorAND + Usuarios.NM_USUARIO_BD + ".\"" + Usuarios.NM_ID_USUARIO + "\" = ?";
 
                 conectorAND = " AND ";
             }
 
             if (pUsuario.getNomeUsuario() != null) {
-                query = query + conectorAND + Usuarios.NM_USUARIO_BD + "." + Usuarios.NM_NOME_USUARIO + " = ?";
+                query = query + conectorAND + Usuarios.NM_USUARIO_BD + ".\"" + Usuarios.NM_NOME_USUARIO + "\" = ?";
 
                 conectorAND = " AND ";
             }
 
             if (pUsuario.getEmailUsuario() != null) {
-                query = query + conectorAND + Usuarios.NM_USUARIO_BD + "." + Usuarios.NM_EMAIL_USUARIO + " = ?";
+                query = query + conectorAND + Usuarios.NM_USUARIO_BD + ".\"" + Usuarios.NM_EMAIL_USUARIO + "\" = ?";
 
                 conectorAND = " AND ";
             }
@@ -54,7 +54,7 @@ public class DatabaseUsuario {
                 statement.setString(++queryIndex, pUsuario.getEmailUsuario());
             }
 
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 Long idUsuario = resultSet.getLong(Usuarios.NM_ID_USUARIO);
